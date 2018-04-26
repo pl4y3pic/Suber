@@ -21,6 +21,10 @@ namespace Suber
 		private System.Windows.Forms.ListBox Subs;
 		private System.Windows.Forms.Timer Timer;
 		private System.Windows.Forms.FontDialog fontDialog;
+		private System.Windows.Forms.ComboBox Aspect;
+		private System.Windows.Forms.TextBox EndT;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.TextBox StartT;
 		
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -49,6 +53,10 @@ namespace Suber
 			this.Split = new System.Windows.Forms.SplitContainer();
 			this.SubText = new System.Windows.Forms.Label();
 			this.Player = new AxWMPLib.AxWindowsMediaPlayer();
+			this.EndT = new System.Windows.Forms.TextBox();
+			this.Aspect = new System.Windows.Forms.ComboBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.StartT = new System.Windows.Forms.TextBox();
 			this.Subs = new System.Windows.Forms.ListBox();
 			this.Timer = new System.Windows.Forms.Timer(this.components);
 			this.fontDialog = new System.Windows.Forms.FontDialog();
@@ -85,6 +93,10 @@ namespace Suber
 			// 
 			// Split.Panel2
 			// 
+			this.Split.Panel2.Controls.Add(this.EndT);
+			this.Split.Panel2.Controls.Add(this.Aspect);
+			this.Split.Panel2.Controls.Add(this.label1);
+			this.Split.Panel2.Controls.Add(this.StartT);
 			this.Split.Panel2.Controls.Add(this.Subs);
 			this.Split.Size = new System.Drawing.Size(1303, 671);
 			this.Split.SplitterDistance = 881;
@@ -121,16 +133,58 @@ namespace Suber
 			this.Player.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.PlayerPlayStateChange);
 			this.Player.Enter += new System.EventHandler(this.SubsFocus);
 			// 
+			// EndT
+			// 
+			this.EndT.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.EndT.Location = new System.Drawing.Point(91, 637);
+			this.EndT.Name = "EndT";
+			this.EndT.Size = new System.Drawing.Size(64, 22);
+			this.EndT.TabIndex = 8;
+			// 
+			// Aspect
+			// 
+			this.Aspect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.Aspect.FormattingEnabled = true;
+			this.Aspect.Items.AddRange(new object[] {
+			"Keep Aspect",
+			"16/9",
+			"4/3"});
+			this.Aspect.Location = new System.Drawing.Point(176, 637);
+			this.Aspect.Name = "Aspect";
+			this.Aspect.Size = new System.Drawing.Size(105, 22);
+			this.Aspect.TabIndex = 7;
+			this.Aspect.Text = "Keep Aspect";
+			// 
+			// label1
+			// 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(76, 639);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(11, 14);
+			this.label1.TabIndex = 5;
+			this.label1.Text = "-";
+			// 
+			// StartT
+			// 
+			this.StartT.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.StartT.Location = new System.Drawing.Point(8, 637);
+			this.StartT.Name = "StartT";
+			this.StartT.Size = new System.Drawing.Size(64, 22);
+			this.StartT.TabIndex = 4;
+			// 
 			// Subs
 			// 
-			this.Subs.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.Subs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.Subs.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
 			this.Subs.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Subs.FormattingEnabled = true;
 			this.Subs.ImeMode = System.Windows.Forms.ImeMode.Disable;
 			this.Subs.Location = new System.Drawing.Point(0, 0);
 			this.Subs.Name = "Subs";
-			this.Subs.Size = new System.Drawing.Size(418, 671);
+			this.Subs.Size = new System.Drawing.Size(418, 628);
 			this.Subs.Sorted = true;
 			this.Subs.TabIndex = 0;
 			this.Subs.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.SubsDrawItem);
@@ -162,6 +216,7 @@ namespace Suber
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainFormKeyDown);
 			this.Split.Panel1.ResumeLayout(false);
 			this.Split.Panel2.ResumeLayout(false);
+			this.Split.Panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.Split)).EndInit();
 			this.Split.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.Player)).EndInit();

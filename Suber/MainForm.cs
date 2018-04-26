@@ -7,6 +7,7 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
@@ -105,14 +106,15 @@ namespace Suber
             fs.Close();
             return r;
         }
-		static string Time2Str(int t)
+		static string Time2Str(int t, bool noms = false)
 		{
 			if (t == tMax) return tUndef;
 			int h = t / 3600000;
 			int m = t / 60000 % 60;
 			int s = t / 1000 % 60;
 			int ms = t % 1000;
-			return string.Format("{0:00}:{1:00}:{2:00},", h, m, s) + string.Format("{0:000}", ms);			
+			if (noms) return string.Format("{0}:{1:00}:{2:00}", h, m, s);
+			return string.Format("{0:00}:{1:00}:{2:00},", h, m, s) + string.Format("{0:000}", ms);
 		}
 		static int Str2Time(string t)
 		{
@@ -135,16 +137,30 @@ namespace Suber
 			}
 			return i;
 		}
-		static string IndexStr(string ss, int i)
+		static string IndexStr(string s, int i)
 		{
 			int j = 0;
 			while (true) {
-				if (ss[++j] == ',') {
+				if (s[++j] == ',') {
 					i--;
 					if (i == 0) break;
 				}
 			}
-			return ss.Substring(++j);
+			return s.Substring(++j);
+		}
+		static string AssText(string s)
+		{
+			s = s.Replace("        ", "|").Replace("\\N", "|");
+			while (true)
+			{
+				int i, j;
+				i = s.IndexOf('{');
+				if (i < 0) break;
+				j = s.IndexOf('}', i);
+				if (j < 0) break;
+				s = s.Substring(0, i) + s.Substring(j+1);
+			}
+			return s;
 		}
 
 		class Subtitle
@@ -240,7 +256,7 @@ namespace Suber
 						if (!ss.StartsWith("Dialogue:")) continue;
 						s = new Subtitle(Str2Time("0" + IndexStr(ss, si).Substring(0, 10) + "0"),
 						                 Str2Time("0" + IndexStr(ss, ei).Substring(0, 10) + "0"),
-						                 IndexStr(ss, ti).Replace("        ", "|").Replace("\\N", "|"));
+						                 AssText(IndexStr(ss, ti)));
 					}
 					Subs.Items.Add(s);
 				}
@@ -430,6 +446,22 @@ namespace Suber
 
 			e.Handled = true;
 			switch (e.KeyCode) {
+			case Keys.D:
+				StartT.Text = Time2Str((int)(Player.Ctlcontrols.currentPosition * 1000), true);
+				break;
+			case Keys.F:
+				EndT.Text = Time2Str((int)(Player.Ctlcontrols.currentPosition * 1000), true);
+				break;
+			case Keys.C:
+				string pa = "\"" + Player.URL + "\" " + StartT.Text +"-"+ EndT.Text;
+				if (string.Compare(Aspect.Text, "Keep Aspect") != 0)
+				{
+					pa += " --aspect-ratio -1:" + Aspect.Text;
+				}
+				Player.Ctlcontrols.stop();
+				Process.Start("F:/Tools/mc.bat", pa);
+				Close();
+				return;
 			case Keys.Enter:
 				if (e.Alt) {
 					Player.fullScreen = !Player.fullScreen;
@@ -494,7 +526,10 @@ namespace Suber
 				return;
 			}
 
-			if (i < 0) return;
+			if (StartT.Focused || EndT.Focused || i < 0) {
+				e.Handled = false;
+				return;
+			}
 
 			int t = -1;
 			int l;
